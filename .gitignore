@@ -2,3 +2,6 @@ node_modules/
 .env
 .DS_Store
 dist/
+docs/
+MEMORY.md
+test_file.txt
