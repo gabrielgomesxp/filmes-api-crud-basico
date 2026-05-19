@@ -1,37 +1,23 @@
-const express = require('express'); // importanto express para o projeto
+import express, { json } from 'express'; // importanto express para o projeto
 const app = express(); // criando uma aplicação express ( instancia )
-const port = 3000; // definindo a porta que o servidor vai escutar
-app.use(express.json()); // o "traduz" do JSON para o Express
 
-// criar rota padrão raiz ( localhost:3000 )
-
-// falar com a porta 3000
-app.get('/', (req, res) => { // definindo uma rota GET para a aplicação
-    res.send('Hello World!'); // resposta ao cliente
-});
-
-// escutar a porta 3000
-app.listen(port, () => {
-    console.log(`Server is running on port localhost:${port}`);
-}); // função que vai ser executada quando o servidor estiver rodando
-
+app.use(json()); // o "traduz" do JSON para o Express
 
 
 // ---- filmes
 
-const filmes = [
+const filmes = [ // array de filmes
     {id: 1, titulo: 'O Senhor dos Anéis', categoria: "Ação"},
     {id: 2, titulo: 'Harry Potter e a Pedra Filosofal', categoria: "Aventura"},
     {id: 3, titulo: 'Matrix', categoria: "Ficção Científica"},
     {id: 4, titulo: 'O Código Da Vinci', categoria: "História"}
-]; // array de filmes
+]; 
 
 app.get('/filmes', (req, res) => {
     res.json(filmes); // resposta ao cliente com o array de filmes
 });
 
 // ----
-
 // ---- selefionar filmes por categoria
 
 app.get('/filmes/:id', (req, res) =>{
@@ -54,4 +40,23 @@ app.post('/filmes', (req, res) =>{
 });
 
 // ----
+// ---- deletar filmes selecionados pelo id
+app.delete('/filmes/:id', (req, res) => {
+    const id = req.params.id; // obter o ID do filme a ser deletado
 
+    // 1. Achar o índice do filme no array de filmes
+    const index = filmes.findIndex(f => f.id == id); // encontrar o índice do filme no array de filmes
+
+    // 2. Usar o splice para remover ( se o index for diferente de -1)
+    if(index >= 0){ 
+        filmes.splice(index, 1); // remover o filme no índice especificado
+        res.status(204).send('Filme deletado com sucesso!'); // retorna sem conteúdo
+    }else{
+        res.status(404).send('Filme não encontrado!'); // retorna um status 4
+    }
+
+});
+
+
+// ----
+export default app; // exportar o objeto app para ser usado em outros arquivos do projeto
