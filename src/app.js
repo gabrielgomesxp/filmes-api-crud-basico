@@ -13,8 +13,21 @@ const filmes = [ // array de filmes
     {id: 4, titulo: 'O Código Da Vinci', categoria: "História"}
 ]; 
 
+const selecoes = [ // array de filmes
+    {id: 1, titulo: 'Brasil', categoria: "America do Sul"},
+    {id: 2, titulo: 'Argentina', categoria: "America do Sul"},
+    {id: 3, titulo: 'Chile', categoria: "America do Sul"},
+    {id: 4, titulo: 'Colombia', categoria: "America do Sul"} 
+]; 
+
+
 app.get('/filmes', (req, res) => {
     res.json(filmes); // resposta ao cliente com o array de filmes
+});
+
+
+app.get('/selecoes', (req, res) => {
+    res.json(selecoes); // resposta ao cliente com o array de selecoes
 });
 
 // ----
@@ -37,6 +50,13 @@ app.post('/filmes', (req, res) =>{
     const novoFilme = req.body; // obter os dados do novo filme do corpo da requisição
     filmes.push(novoFilme); // adicionar o novo filme ao array de filmes
     res.status(201).json(novoFilme) // retorna o novo filme criado com status 201 (Created)
+});
+
+// ----
+// ---- 
+app.post('/selecoes', (req, res) => {
+    selecoes.push(req.body); // adicionar o novo filme ao array de filmes
+    res.status(201).send('Seleção cadastrada com sucesso') // retorna o novo
 });
 
 // ----
